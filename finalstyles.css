@@ -1,0 +1,122 @@
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe4e6; /* Light pink background */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center; /* Centers all content */
+}
+
+
+/* Header */
+header {
+    background-color: #f77090; /* Soft pink for the header */
+    color: white;
+    padding: 20px 0;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+/* Add this to finalstyles.css to manage the header background globally */
+header.masthead {
+    background-color: #003C71; /* Matching blue background */
+    color: white;
+    padding: 50px 0;
+}
+
+/* Navigation */
+nav {
+    background-color: #ffb3c1; /* Light coral pink */
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Section Styles */
+section {
+    margin: 20px auto;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Centers the section */
+    width: 80%; /* Controls section width */
+}
+
+section img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
+section h2 {
+    color: #ff8ba7;
+    margin-bottom: 10px;
+}
+
+#dance ul {
+    list-style-position: inside;
+    padding-left: 0;
+  }
+
+  #dance {
+    text-align: left; /* Align text within the #dance section to the left */
+  }
+  
+  #dance {
+    text-align: center; /* Center the text within the section */
+  }
+  
+  #dance ol {
+    list-style-position: inside; /* Numbers inside list items */
+    padding-left: 0; /* Remove default padding */
+    margin: 0 auto; /* Center the list horizontally */
+    width: fit-content; /* Prevents list from stretching too wide */
+  }
+
+/* Footer */
+footer {
+    background-color: #ff8ba7;
+    color: white;
+    padding: 15px 0;
+}
+
+footer a {
+    color: #FFD700; /* Gold link */
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* <header class="masthead" style="background-image: url('assets/img/resumepic.jpg')">
+<div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="page-heading">
+                <h1>Faith H. Vogel</h1>
+                <span class="subheading">
+                    <ul>Brigham Young University</ul>
+                    <ul>Pre-Marketing Student</ul>
+                    <ul>fvogel@byu.edu</ul> 
+                    <ul>(602) 380-2092</ul>
+                </span>
+            </div> */

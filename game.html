@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <p> <title>Memory Match Game</title></p>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('https://media.istockphoto.com/id/529664572/photo/fruit-background.jpg?s=612x612&w=0&k=20&c=K7V0rVCGj8tvluXDqxJgu0AdMKF8axP0A15P-8Ksh3I=') no-repeat center center/cover;
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2a6ebd;
+            margin: 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 1.2em;
+            color: #fff;
+            margin: 10px 0 30px 0;
+            text-shadow: 1px 1px 3px black;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 15px;
+            margin: 20px;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 122, 204, 0.9); /* Slight transparency */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(5px); /* Slight blur for background */
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .card.matched {
+            background-color: rgba(76, 175, 80, 0.9); /* Slight transparency */
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .hidden {
+            background-color: rgba(0, 122, 204, 0.9);
+            color: transparent;
+        }
+
+        #restart-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #2a6ebd;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        #restart-button:hover {
+            background-color: #1a5a9d;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #score {
+            font-size: 1.2em;
+            color: white;
+            margin-top: 10px;
+            text-shadow: 1px 1px 3px black;
+        }
+
+        /* Back to Favorites Button */
+        .back-button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #f77090;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #c44d6f;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Memory Match Game</h1>
+        <h2>Can you match all the fruits?</h2>
+        <div id="score">Matches Found: 0</div>
+        <div id="game-board"></div>
+        <button id="restart-button">Restart Game</button>
+        <a href="myfavs.html" class="back-button">Back to Favorites</a>
+    </div>
+
+    <script>
+        const symbols = ['🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍓', '🍓', '🍒', '🍒', '🍉', '🍉', '🍍', '🍍', '🥝', '🥝'];
+
+        const gameBoard = document.getElementById('game-board');
+        const restartButton = document.getElementById('restart-button');
+        const scoreDisplay = document.getElementById('score');
+        let firstCard = null;
+        let secondCard = null;
+        let preventClick = false;
+        let matches = 0;
+
+        // Function to initialize the game
+        function initializeGame() {
+            gameBoard.innerHTML = ''; // Clear the game board
+            matches = 0;
+            scoreDisplay.textContent = `Matches Found: ${matches}`;
+            const shuffledSymbols = symbols.sort(() => Math.random() - 0.5);
+
+            shuffledSymbols.forEach((symbol) => {
+                const card = document.createElement('div');
+                card.classList.add('card', 'hidden');
+                card.textContent = symbol;
+                gameBoard.appendChild(card);
+
+                // Add click event
+                card.addEventListener('click', () => {
+                    if (preventClick || card.classList.contains('matched') || card === firstCard) {
+                        return;
+                    }
+
+                    card.classList.remove('hidden');
+
+                    if (!firstCard) {
+                        firstCard = card;
+                    } else {
+                        secondCard = card;
+                        preventClick = true;
+
+                        if (firstCard.textContent === secondCard.textContent) {
+                            // Match found
+                            firstCard.classList.add('matched');
+                            secondCard.classList.add('matched');
+                            matches++;
+                            scoreDisplay.textContent = `Matches Found: ${matches}`;
+                            resetTurn();
+                        } else {
+                            // No match, hide cards after a brief delay
+                            setTimeout(() => {
+                                firstCard.classList.add('hidden');
+                                secondCard.classList.add('hidden');
+                                resetTurn();
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Reset turn
+        function resetTurn() {
+            firstCard = null;
+            secondCard = null;
+            preventClick = false;
+        }
+
+        // Restart game on button click
+        restartButton.addEventListener('click', initializeGame);
+
+        // Start the game for the first time
+        initializeGame();
+    </script>
+</body>
+</html>
